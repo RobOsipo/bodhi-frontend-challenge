@@ -5,7 +5,10 @@
 
 
   /* color variables */
+  --primary: '#1976d2';
+  --secondary: "#a3b7e9";
   --white: #fff;
+  --black: #000;
 }
 
 /* normalize css */
@@ -37,8 +40,19 @@ a {
   height: calc(100vh - var(--app-header-height));
   max-height: calc(100vh - var(--app-header-height));
   min-height: calc(100vh - var(--app-header-height));
-  display: flex;
-  flex-direction: column;
+  padding: 2rem;
+}
+
+@media (max-width: 950px) {
+  .app {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 650px) {
+  .app {
+    padding: 1rem;
+  }
 }
 
 

@@ -1,3 +1,5 @@
+"use server";
+
 // external imports
 import { encode } from "base-64";
 

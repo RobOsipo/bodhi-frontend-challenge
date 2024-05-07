@@ -28,9 +28,9 @@ export function AppHeader() {
             <Menu />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Guest Management App
+            User Management App
           </Typography>
-          <Avatar>RO</Avatar>
+          <Avatar sx={{}}>RO</Avatar>
         </Toolbar>
       </AppBar>
     </Box>
