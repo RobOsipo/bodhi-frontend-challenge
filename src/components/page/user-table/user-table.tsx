@@ -8,10 +8,12 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { Close, DeleteForever, SearchOutlined } from "@mui/icons-material";
-import { useMemo, useState } from "react";
+import { fetchEventSource } from "@microsoft/fetch-event-source";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 
 // internal imports
+import { API_HOST } from "@/helpers/api-host";
 import { AddUserButton } from "../add-user-button/add-user-button";
 import { DataTable } from "@/components/global/data-table/data-table";
 import { MobileDataTable } from "@/components/global/mobile-data-table/mobile-data-table";
@@ -23,6 +25,7 @@ import { UserForm } from "../user-form/user-form";
 export function UserTable({ tableData = [] }: any) {
   // state
   const [searchQuery, setSearchQuery] = useState("");
+  const [tableDataState, setTableDataState] = useState(tableData);
 
   // router hooks
   const router = useRouter();
@@ -38,6 +41,36 @@ export function UserTable({ tableData = [] }: any) {
 
   // mobile media query
   const isMobile = useMediaQuery("(max-width: 950px)");
+
+  // get event controller ref
+  const eventController = useRef(new AbortController());
+
+  // set up SSE event listener
+  useEffect(() => {
+    eventController.current.abort();
+    eventController.current = new AbortController();
+
+    const processEventMessage = (msg: any) => {
+      console.log("msg from SSE", msg);
+    };
+
+    (async () => {
+      fetchEventSource(`${API_HOST}/users/events`, {
+        method: "GET",
+        openWhenHidden: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        signal: eventController.current.signal,
+        onmessage(msg) {
+          processEventMessage(msg);
+        },
+        onerror(err) {
+          console.log("SSE error", err);
+        },
+      });
+    })();
+  }, []);
 
   // event handlers
   const handleSearchQueryChange = (e: any) => {
@@ -145,7 +178,13 @@ export function UserTable({ tableData = [] }: any) {
               <Close />
             </IconButton>
           </Stack>
-          <UserForm />
+          <UserForm
+            user={
+              userParam === "new"
+                ? null
+                : tableData.find((u) => u._id === userParam)
+            }
+          />
         </Modal>
       )}
     </>

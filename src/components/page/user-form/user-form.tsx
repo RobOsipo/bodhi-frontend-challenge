@@ -1,11 +1,13 @@
 // external imports
-import { Stack, TextField } from "@mui/material";
-import { useState } from "react";
+import { Button, Stack, TextField } from "@mui/material";
+import { useEffect, useState } from "react";
 
 // internal imports
 
 // user-form component
-export function UserForm() {
+export function UserForm({
+  user,
+}: Readonly<{ user: { [key: string]: string } | null }>) {
   // state
   const [formData, setFormData] = useState({
     firstName: "",
@@ -13,6 +15,18 @@ export function UserForm() {
     email: "",
     phoneNumber: "",
   });
+
+  // set user data into state if it exists
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+      });
+    }
+  }, [user]);
 
   // event handlers
   const handleChange = (e: any) => {
@@ -49,6 +63,12 @@ export function UserForm() {
         value={formData.phoneNumber}
         onChange={handleChange}
       />
+
+      <Stack direction="row" alignItems="center" justifyContent="flex-end">
+        <Button variant="contained" color="primary">
+          Save
+        </Button>
+      </Stack>
     </Stack>
   );
 }
