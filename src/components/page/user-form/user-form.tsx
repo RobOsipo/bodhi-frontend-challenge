@@ -41,12 +41,14 @@ export function UserForm({
     <Stack direction="column" spacing={2} sx={{ pt: "2rem" }}>
       <TextField
         label="First Name"
+        name="firstName"
         size="small"
         value={formData.firstName}
         onChange={handleChange}
       />
       <TextField
         label="Last Name"
+        name="lastName"
         size="small"
         value={formData.lastName}
         onChange={handleChange}
@@ -54,11 +56,13 @@ export function UserForm({
       <TextField
         label="Email"
         size="small"
+        name="email"
         value={formData.email}
         onChange={handleChange}
       />
       <TextField
         label="Phone Number"
+        name="phoneNumber"
         size="small"
         value={formData.phoneNumber}
         onChange={handleChange}
