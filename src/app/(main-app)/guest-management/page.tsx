@@ -1,9 +1,14 @@
+// external imports
+
 // internal imports
-import styles from "../page.module.css";
 
 // guest-management page
 export function GuestManagement() {
-  return <main className={styles.main}></main>;
+  return (
+    <>
+      <h1>content</h1>
+    </>
+  );
 }
 
 export default GuestManagement;
